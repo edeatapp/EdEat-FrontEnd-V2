@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: keep a sensible default background */
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+  background: #000;
+}
+
+#root {
+  width: 100%;
+  overflow-x: hidden;
+  background: #000;
+}
