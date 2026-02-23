@@ -5,6 +5,9 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
+  // Modal state for form embeds
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState(null); // 'restaurant' | 'creator'
   
   // Refs for scroll spy
   const step1Ref = useRef(null);
@@ -75,6 +78,18 @@ const App = () => {
     window.addEventListener('scroll', handleScrollSpy);
     return () => window.removeEventListener('scroll', handleScrollSpy);
   }, []);
+
+  // Lock body scroll while modal is open and close modal on ESC
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') setModalOpen(false); };
+    if (modalOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [modalOpen]);
 
   // Custom Logo Component - Responsive Text Size
   const Logo = () => (
@@ -208,6 +223,11 @@ const App = () => {
     "/videos/17924651418080864.mp4", // Recycling first video to fill 4th column
     "/videos/18344778568087988.mp4"  // Recycling second video to fill 4th column
   ];
+
+  // Google Form embed URL - replace this with your form's embed URL
+  const RESTAURANT_FORM_EMBED_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSc4myUErfHFoUEz2Kxb-3bYwf3f6ErjE5ZVIeVrUhkd6osgcA/viewform?embedded=true'; // e.g. https://docs.google.com/forms/d/e/FORM_ID/viewform?embedded=true
+  // Creator form embed URL (replace with your creator form)
+  const CREATOR_FORM_EMBED_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeKBeJP5-BUnL7VwV9C0pBpCppfi4cQWi3aI4dsO7PfaujB0w/viewform?embedded=true';
 
   // OPTIMIZED VIDEO CARD COMPONENT
   // Handles play/pause logic based on visibility to save resources
@@ -348,14 +368,20 @@ const App = () => {
               
               {/* Inner container */}
               <div className="relative z-10 bg-black rounded-2xl flex flex-col sm:flex-row items-center p-1">
-                {/* Filled Button */}
-                <button className="w-full sm:w-auto px-6 md:px-8 py-3 rounded-xl bg-white text-black font-bold text-base md:text-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 mb-1 sm:mb-0">
+                {/* Filled Button (opens Creator form modal) */}
+                <button
+                  onClick={() => { setModalType('creator'); setModalOpen(true); }}
+                  className="w-full sm:w-auto px-6 md:px-8 py-3 rounded-xl bg-white text-black font-bold text-base md:text-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 mb-1 sm:mb-0"
+                >
                    <Camera className="w-5 h-5 text-black" />
-                   I'm a Creator
+                   I'm a Restaurant
                 </button>
-                {/* Unfilled/Transparent Button */}
-                <button className="w-full sm:w-auto px-6 md:px-8 py-3 rounded-xl bg-transparent text-white font-bold text-base md:text-lg hover:bg-white/10 transition-colors flex items-center justify-center sm:ml-1">
-                  I'm a Restaurant <ArrowRight className="ml-2 w-4 h-4" />
+                {/* Unfilled/Transparent Button (opens Restaurant form modal) */}
+                <button
+                  onClick={() => { setModalType('restaurant'); setModalOpen(true); }}
+                  className="w-full sm:w-auto px-6 md:px-8 py-3 rounded-xl bg-transparent text-white font-bold text-base md:text-lg hover:bg-white/10 transition-colors flex items-center justify-center sm:ml-1"
+                >
+                  I'm a Creator <ArrowRight className="ml-2 w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -377,6 +403,58 @@ const App = () => {
 
         </div>
       </section>
+
+      {/* Apply Section - kept as fallback (hidden) */}
+      <section id="apply" className="max-w-4xl mx-auto px-4 py-12 hidden">
+        <h2 className="text-2xl font-bold mb-4 text-center">Apply for Access</h2>
+        <div className="w-full bg-black/60 rounded-lg p-4">
+          <iframe
+            src={RESTAURANT_FORM_EMBED_URL}
+            width="100%"
+            height="800"
+            frameBorder="0"
+            marginHeight="0"
+            marginWidth="0"
+            title="Apply Form"
+            className="w-full h-[800px] rounded-md"
+          >
+            Loading…
+          </iframe>
+        </div>
+      </section>
+
+      {/* Modal for embedding forms (opened by hero buttons) */}
+      {modalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/70" onClick={() => setModalOpen(false)} />
+          <div className="relative z-50 max-w-5xl w-full mx-4 md:mx-0">
+            <div className="bg-black rounded-2xl border border-white/10 overflow-hidden">
+              <div className="flex items-center justify-between p-4 border-b border-white/5">
+                <div className="text-white font-bold">
+                  {modalType === 'restaurant' ? 'Restaurant Application' : 'Creator Application'}
+                </div>
+                <button
+                  className="text-gray-300 hover:text-white p-2"
+                  onClick={() => setModalOpen(false)}
+                  aria-label="Close form"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="p-4">
+                <iframe
+                  src={modalType === 'restaurant' ?  CREATOR_FORM_EMBED_URL : RESTAURANT_FORM_EMBED_URL}
+                  title={modalType === 'restaurant' ? 'Restaurant Form' : 'Creator Form'}
+                  className="w-full h-[78vh] rounded-md"
+                  frameBorder="0"
+                  marginHeight="0"
+                  marginWidth="0"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Infinite Scrolling Ticker (Bottom/Mid Section) */}
       <div className="relative py-6 md:py-8 bg-black border-y border-white/10 overflow-hidden">
