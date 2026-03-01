@@ -368,17 +368,17 @@ const App = () => {
               
               {/* Inner container */}
               <div className="relative z-10 bg-black rounded-2xl flex flex-col sm:flex-row items-center p-1">
-                {/* Filled Button (opens Creator form modal) */}
+                {/* Filled Button (opens Restaurant form modal) */}
                 <button
-                  onClick={() => { setModalType('creator'); setModalOpen(true); }}
+                  onClick={() => { setModalType('restaurant'); setModalOpen(true); }}
                   className="w-full sm:w-auto px-6 md:px-8 py-3 rounded-xl bg-white text-black font-bold text-base md:text-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 mb-1 sm:mb-0"
                 >
                    <Camera className="w-5 h-5 text-black" />
                    I'm a Restaurant
                 </button>
-                {/* Unfilled/Transparent Button (opens Restaurant form modal) */}
+                {/* Unfilled/Transparent Button (opens Creator form modal) */}
                 <button
-                  onClick={() => { setModalType('restaurant'); setModalOpen(true); }}
+                  onClick={() => { setModalType('creator'); setModalOpen(true); }}
                   className="w-full sm:w-auto px-6 md:px-8 py-3 rounded-xl bg-transparent text-white font-bold text-base md:text-lg hover:bg-white/10 transition-colors flex items-center justify-center sm:ml-1"
                 >
                   I'm a Creator <ArrowRight className="ml-2 w-4 h-4" />
@@ -443,7 +443,7 @@ const App = () => {
               </div>
               <div className="p-4">
                 <iframe
-                  src={modalType === 'restaurant' ?  CREATOR_FORM_EMBED_URL : RESTAURANT_FORM_EMBED_URL}
+                  src={modalType === 'restaurant' ? RESTAURANT_FORM_EMBED_URL : CREATOR_FORM_EMBED_URL}
                   title={modalType === 'restaurant' ? 'Restaurant Form' : 'Creator Form'}
                   className="w-full h-[78vh] rounded-md"
                   frameBorder="0"
