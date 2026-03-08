@@ -227,7 +227,7 @@ const App = () => {
   // Google Form embed URL - replace this with your form's embed URL
   const RESTAURANT_FORM_EMBED_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSc4myUErfHFoUEz2Kxb-3bYwf3f6ErjE5ZVIeVrUhkd6osgcA/viewform?embedded=true'; // e.g. https://docs.google.com/forms/d/e/FORM_ID/viewform?embedded=true
   // Creator form embed URL (replace with your creator form)
-  const CREATOR_FORM_EMBED_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeKBeJP5-BUnL7VwV9C0pBpCppfi4cQWi3aI4dsO7PfaujB0w/viewform?embedded=true';
+  const CREATOR_FORM_EMBED_URL = '' //'https://docs.google.com/forms/d/e/1FAIpQLSeKBeJP5-BUnL7VwV9C0pBpCppfi4cQWi3aI4dsO7PfaujB0w/viewform?embedded=true';
 
   // OPTIMIZED VIDEO CARD COMPONENT
   // Handles play/pause logic based on visibility to save resources
